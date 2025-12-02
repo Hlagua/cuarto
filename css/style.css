@@ -1,202 +1,215 @@
+/* --- VARIABLES DE COLOR (IDENTIDAD UTA) --- */
+:root {
+    --uta-red: #781E24;
+    --uta-red-light: #A00000;
+    --uta-gold: #D39C24;
+    --uta-gray: #f5f5f5;
+    --text-dark: #333333;
+    --text-light: #666666;
+}
 
-    /* --- CONFIGURACIÓN GENERAL --- */
-    :root {
-        --uta-red: #781E24;     /* Rojo institucional oscuro */
-        --uta-gold: #D39C24;    /* Dorado de los botones */
-        --uta-gray: #f5f5f5;    /* Fondo gris muy claro */
-        --text-dark: #333333;
-        --border-color: #e0e0e0;
-    }
+/* --- CONTENEDOR PRINCIPAL --- */
+.uta-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-dark);
+}
 
-    body {
-        font-family: 'Roboto', 'Segoe UI', sans-serif; /* Tipografía más moderna */
-        background-color: white;
-        color: var(--text-dark);
-        margin: 0;
-    }
+/* --- TIPOGRAFÍA --- */
+.uta-title {
+    color: var(--uta-red);
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
 
-    /* Contenedor principal */
-    .uta-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 40px 20px;
-    }
+.uta-subtitle {
+    text-align: center;
+    color: var(--text-light);
+    font-size: 1.2rem;
+    margin-bottom: 50px;
+    font-weight: 300;
+}
 
-    /* --- TIPOGRAFÍA --- */
-    .uta-title {
-        color: var(--uta-red);
-        text-align: center;
-        font-size: 2.2em;
-        margin-bottom: 10px;
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-    }
+/* --- HERO SECTION (BANNER) --- */
+.uta-hero {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    border: none;
+}
 
-    .uta-subtitle {
-        text-align: center;
-        color: #666;
-        margin-bottom: 50px;
-        font-size: 1.1em;
-        font-weight: 300;
-    }
+.uta-hero-overlay {
+    background: rgba(120, 30, 36, 0.85);
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-    /* --- HERO SECTION (BANNER) --- */
-    .uta-hero {
-        position: relative;
-        width: 100%;
-        height: 350px;
-        background-size: cover;
-        background-position: center;
-        /* ELIMINADO: border-radius */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 40px;
-    }
-    
-    .uta-hero::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(120, 30, 36, 0.4); /* Capa roja más oscura */
-    }
+.uta-hero h2 {
+    color: white;
+    font-size: 2.8rem;
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
 
-    .uta-hero h2 {
-        position: relative;
-        z-index: 2;
-        color: white;
-        font-size: 3em;
-        text-align: center;
-        text-transform: uppercase;
-        font-weight: 700;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    }
+.uta-hero p {
+    color: var(--uta-gold);
+    font-size: 1.2rem;
+    margin-top: 10px;
+    font-weight: 600;
+}
 
-    /* --- GRID DE TARJETAS (Cajas cuadradas) --- */
-    .uta-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 30px; /* Espaciado entre tarjetas */
-        margin-top: 20px;
-    }
+/* --- GRID SYSTEM --- */
+.uta-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
 
-    .uta-card {
-        background: white;
-        border: 1px solid var(--border-color); /* Borde fino en lugar de sombra */
-        padding: 40px 30px;
-        text-align: center;
-        transition: all 0.3s ease;
-        /* ELIMINADO: border-radius y border-top grueso */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-        height: 100%; /* Para que todas tengan misma altura */
-    }
+/* --- TARJETAS (CARDS) --- */
+.uta-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    padding: 40px 30px;
+    flex: 1;
+    min-width: 300px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* AHORA TODO CENTRADO */
+    border-radius: 0 !important;
+}
 
-    .uta-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        border-color: var(--uta-red);
-    }
+.uta-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--uta-red);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
 
-    .uta-card h3 {
-        color: var(--uta-red); /* Títulos en rojo vino */
-        margin: 20px 0;
-        font-size: 1.2em;
-        font-weight: 600;
-        text-transform: uppercase;
-    }
+.uta-card.primary {
+    background-color: var(--uta-red);
+    color: white;
+    border: none;
+}
 
-    .uta-card p {
-        font-size: 0.95em;
-        line-height: 1.6;
-        color: #555;
-        margin-bottom: 25px;
-    }
+.uta-card.primary h3,
+.uta-card.primary p {
+    color: white;
+}
 
-    /* Variación: Tarjeta Roja Sólida (Como "Programa de becas" en la imagen) */
-    .uta-card.primary {
-        background-color: var(--uta-red);
-        border: none;
-        color: white;
-    }
-    .uta-card.primary h3, 
-    .uta-card.primary p {
-        color: white;
-    }
+.uta-card h3 {
+    color: var(--uta-red);
+    font-size: 1.4rem;
+    margin: 15px 0;
+    text-transform: uppercase;
+}
 
-    /* --- BOTONES (Estilo cuadrado dorado con flecha) --- */
-    .btn-uta {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 50px; 
-        height: 50px;
-        background-color: var(--uta-gold);
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 1.2em;
-        transition: background 0.3s;
-        /* CRUCIAL: Cuadrado perfecto */
-        border-radius: 0; 
-        margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
-    }
-    
-    /* Si quieres texto en el botón en lugar de solo flecha, usa esta clase */
-    .btn-uta-text {
-        padding: 12px 25px;
-        width: auto;
-        height: auto;
-        font-size: 0.9em;
-        text-transform: uppercase;
-    }
+.uta-card p {
+    line-height: 1.6;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
 
-    .btn-uta:hover, .btn-uta-text:hover {
-        background-color: #b0821e; /* Dorado más oscuro */
-    }
+/* --- BOTONES (CORREGIDOS) --- */
+.btn-uta {
+    display: flex;                /* Permite centrar correctamente dentro de flexbox */
+    justify-content: center;
+    align-items: center;
 
-    /* --- FORMULARIOS (CONTACTO) --- */
-    .uta-input {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        background-color: #f9f9f9;
-        /* CRUCIAL: Bordes cuadrados */
-        border-radius: 0; 
-        box-sizing: border-box;
-        font-family: inherit;
-        margin-bottom: 15px;
-    }
+    width: 250px;                 /* Botón ancho */
+    height: 45px;                 /* Altura fija, no se aplasta */
+    margin-top: 20px;             /* Separación de contenido */
 
-    .uta-input:focus {
-        border-color: var(--uta-red);
-        background-color: white;
-        outline: none;
-    }
-    
-    label {
-        color: #444;
-        font-weight: 600;
-        font-size: 0.9em;
-        text-transform: uppercase;
-    }
+    background-color: var(--uta-gold);
+    color: white;
 
-    /* --- MAPA E IMÁGENES --- */
-    iframe, .history-img {
-        border-radius: 0 !important; /* Forzar bordes rectos */
-        box-shadow: none;
-        border: 1px solid #ddd;
-    }
-    
-    /* Iconos dentro de las tarjetas */
-    .icon-uta {
-        font-size: 3em;
-        color: var(--uta-red); /* Icono rojo en tarjeta blanca */
-        stroke-width: 1px;
-    }
-    .primary .icon-uta {
-        color: white; /* Icono blanco en tarjeta roja */
-    }
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 0.9rem;
+
+    border: none;
+    cursor: pointer;
+    border-radius: 0 !important;
+
+    transition: background 0.3s ease;
+}
+
+.btn-uta:hover {
+    background-color: #b0821e;
+    color: white;
+}
+
+
+.btn-uta i {
+    font-size: 1.3rem;
+}
+
+
+/* --- FORMULARIOS --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.uta-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--uta-red);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.uta-input,
+.uta-textarea {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: inherit;
+    border-radius: 0 !important;
+}
+
+.uta-input:focus,
+.uta-textarea:focus {
+    outline: none;
+    border-color: var(--uta-red);
+    background-color: white;
+}
+
+/* --- UTILIDADES --- */
+.text-center { text-align: center; }
+.mt-4 { margin-top: 40px; }
+.w-100 { width: 100%; }
+
+/* --- IMÁGENES --- */
+.uta-img-responsive {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 4px solid var(--uta-gold);
+    border-radius: 0 !important;
+}
+
+

@@ -30,7 +30,7 @@
         </article>
 
         <footer role="contentinfo">
-            <p>Copyright 2024 - Todos los derechos reservados</p>
+            <p>Copyright 2025 - Todos los derechos reservados</p>
         </footer>
     </body>
 </html>

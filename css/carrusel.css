@@ -1,0 +1,88 @@
+
+    /* Estilos específicos para el carrusel y grids de facultades en esta vista */
+    
+    /* Carrusel CSS simple */
+    .uta-carousel {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        margin-bottom: 40px;
+    }
+    .uta-carousel-track {
+        display: flex;
+        width: 300%; /* 3 imagenes */
+        height: 100%;
+        animation: slide 15s infinite;
+    }
+    .uta-carousel-slide {
+        width: 33.33%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+    .uta-carousel-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0,0,0,0.6);
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    
+    @keyframes slide {
+        0%, 28% { transform: translateX(0); }
+        33%, 61% { transform: translateX(-33.33%); }
+        66%, 94% { transform: translateX(-66.66%); }
+        100% { transform: translateX(0); }
+    }
+
+    /* Grids de Facultades */
+    .facultad-section {
+        margin-top: 60px;
+    }
+    .facultad-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    .facultad-card {
+        border: 1px solid #ddd;
+        background: #fff;
+        padding: 0;
+        transition: 0.3s;
+    }
+    .facultad-card:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        border-color: #781E24;
+    }
+    .facultad-header {
+        background: #781E24;
+        color: white;
+        padding: 15px;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+    }
+    .facultad-body {
+        padding: 20px;
+    }
+    .carrera-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 0.85rem;
+        color: #555;
+    }
+    .carrera-list li {
+        margin-bottom: 8px;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 4px;
+    }
+    .carrera-list li:last-child {
+        border-bottom: none;
+    }
