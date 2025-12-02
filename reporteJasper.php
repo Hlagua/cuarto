@@ -1,8 +1,6 @@
 <?php
 
-/* ===================================================
-   CONFIG
-   =================================================== */
+//configuración de JasperStarter
 
 $jasperstarter = 'C:/JasperStarter36/bin/jasperstarter.bat';
 
@@ -12,9 +10,7 @@ $jasper = 'C:/Users/Daniel/Documents/NetBeansProjects/Proyecto/CuartoUtaP/src/re
 $output = 'C:/Users/Daniel/Downloads/reporte';
 $jdbc   = 'C:/JasperStarter36/jdbc';
 
-/* ===================================================
-   ACTIVAR DEBUG? (true / false)
-   =================================================== */
+//debug
 
 $DEBUG = false; // <-- CAMBIA A true SI QUIERES VER ERRORES
 
