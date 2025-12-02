@@ -6,8 +6,14 @@
 /config.php
 /.env
 /.env.local
-/.vscode
 
+fpdf186
+jquery
+
+# Config de editores
+/.vscode/
+
+# Librería FPDF (completa)
 fpdf186/
 
 # Archivos de caché de PHP
@@ -24,20 +30,20 @@ php_errors.log
 #  FRAMEWORKS Y LIBRARÍAS
 # ============================
 
-# jQuery (si lo descargas en vendor o libs)
+# jQuery si se guarda en /libs/jquery
 libs/jquery/*
 !libs/jquery/*.min.js
 !libs/jquery/*.min.map
 
-# FPDF 1.86
-# Si quieres subir solo la librería, pero no los PDFs generados:
+# FPDF clásico (si usas ambas estructuras)
 fpdf/*.php
 fpdf/*.txt
-fpdf/font/*
-# NO subir PDFs generados
+fpdf/font/
+
+# No subir PDFs generados
 *.pdf
 
-# Composer (si llegas a usarlo algún día)
+# Composer (si se usa)
 vendor/
 composer.lock
 
@@ -64,15 +70,13 @@ desktop.ini
 _notes/
 _sass-cache/
 
-# VSCode
-.vscode/
+# VSCode (ya incluido antes)
 .history/
 
 # ============================
 #  ARCHIVOS DE XAMPP
 # ============================
 
-# Carpetas temporales o locales que NO deben subirse
 tmp/
 log/
 logs/
@@ -103,4 +107,3 @@ import/*
 !generated/.gitkeep
 !export/.gitkeep
 !import/.gitkeep
-

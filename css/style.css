@@ -1,0 +1,202 @@
+
+    /* --- CONFIGURACIÓN GENERAL --- */
+    :root {
+        --uta-red: #781E24;     /* Rojo institucional oscuro */
+        --uta-gold: #D39C24;    /* Dorado de los botones */
+        --uta-gray: #f5f5f5;    /* Fondo gris muy claro */
+        --text-dark: #333333;
+        --border-color: #e0e0e0;
+    }
+
+    body {
+        font-family: 'Roboto', 'Segoe UI', sans-serif; /* Tipografía más moderna */
+        background-color: white;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Contenedor principal */
+    .uta-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+
+    /* --- TIPOGRAFÍA --- */
+    .uta-title {
+        color: var(--uta-red);
+        text-align: center;
+        font-size: 2.2em;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+
+    .uta-subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 50px;
+        font-size: 1.1em;
+        font-weight: 300;
+    }
+
+    /* --- HERO SECTION (BANNER) --- */
+    .uta-hero {
+        position: relative;
+        width: 100%;
+        height: 350px;
+        background-size: cover;
+        background-position: center;
+        /* ELIMINADO: border-radius */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+    
+    .uta-hero::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(120, 30, 36, 0.4); /* Capa roja más oscura */
+    }
+
+    .uta-hero h2 {
+        position: relative;
+        z-index: 2;
+        color: white;
+        font-size: 3em;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 700;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* --- GRID DE TARJETAS (Cajas cuadradas) --- */
+    .uta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px; /* Espaciado entre tarjetas */
+        margin-top: 20px;
+    }
+
+    .uta-card {
+        background: white;
+        border: 1px solid var(--border-color); /* Borde fino en lugar de sombra */
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        /* ELIMINADO: border-radius y border-top grueso */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        height: 100%; /* Para que todas tengan misma altura */
+    }
+
+    .uta-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        border-color: var(--uta-red);
+    }
+
+    .uta-card h3 {
+        color: var(--uta-red); /* Títulos en rojo vino */
+        margin: 20px 0;
+        font-size: 1.2em;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+
+    .uta-card p {
+        font-size: 0.95em;
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+    /* Variación: Tarjeta Roja Sólida (Como "Programa de becas" en la imagen) */
+    .uta-card.primary {
+        background-color: var(--uta-red);
+        border: none;
+        color: white;
+    }
+    .uta-card.primary h3, 
+    .uta-card.primary p {
+        color: white;
+    }
+
+    /* --- BOTONES (Estilo cuadrado dorado con flecha) --- */
+    .btn-uta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px; 
+        height: 50px;
+        background-color: var(--uta-gold);
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.2em;
+        transition: background 0.3s;
+        /* CRUCIAL: Cuadrado perfecto */
+        border-radius: 0; 
+        margin-top: auto; /* Empuja el botón al fondo de la tarjeta */
+    }
+    
+    /* Si quieres texto en el botón en lugar de solo flecha, usa esta clase */
+    .btn-uta-text {
+        padding: 12px 25px;
+        width: auto;
+        height: auto;
+        font-size: 0.9em;
+        text-transform: uppercase;
+    }
+
+    .btn-uta:hover, .btn-uta-text:hover {
+        background-color: #b0821e; /* Dorado más oscuro */
+    }
+
+    /* --- FORMULARIOS (CONTACTO) --- */
+    .uta-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
+        /* CRUCIAL: Bordes cuadrados */
+        border-radius: 0; 
+        box-sizing: border-box;
+        font-family: inherit;
+        margin-bottom: 15px;
+    }
+
+    .uta-input:focus {
+        border-color: var(--uta-red);
+        background-color: white;
+        outline: none;
+    }
+    
+    label {
+        color: #444;
+        font-weight: 600;
+        font-size: 0.9em;
+        text-transform: uppercase;
+    }
+
+    /* --- MAPA E IMÁGENES --- */
+    iframe, .history-img {
+        border-radius: 0 !important; /* Forzar bordes rectos */
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    /* Iconos dentro de las tarjetas */
+    .icon-uta {
+        font-size: 3em;
+        color: var(--uta-red); /* Icono rojo en tarjeta blanca */
+        stroke-width: 1px;
+    }
+    .primary .icon-uta {
+        color: white; /* Icono blanco en tarjeta roja */
+    }
