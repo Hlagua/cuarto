@@ -1,0 +1,106 @@
+# ============================
+#  ARCHIVOS PHP / XAMPP
+# ============================
+
+# Configuraciones locales
+/config.php
+/.env
+/.env.local
+/.vscode
+
+fpdf186/
+
+# Archivos de caché de PHP
+*.cache
+*.log
+*.tmp
+php_errors.log
+
+# Sesiones de PHP
+/sessions/*
+!/.gitkeep
+
+# ============================
+#  FRAMEWORKS Y LIBRARÍAS
+# ============================
+
+# jQuery (si lo descargas en vendor o libs)
+libs/jquery/*
+!libs/jquery/*.min.js
+!libs/jquery/*.min.map
+
+# FPDF 1.86
+# Si quieres subir solo la librería, pero no los PDFs generados:
+fpdf/*.php
+fpdf/*.txt
+fpdf/font/*
+# NO subir PDFs generados
+*.pdf
+
+# Composer (si llegas a usarlo algún día)
+vendor/
+composer.lock
+
+# ============================
+#  ARCHIVOS GENERADOS POR EL SISTEMA
+# ============================
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================
+#  EDITORES
+# ============================
+
+# NetBeans
+/nbproject/private/
+/build/
+/dist/
+/nbbuild/
+
+# Dreamweaver
+_notes/
+_sass-cache/
+
+# VSCode
+.vscode/
+.history/
+
+# ============================
+#  ARCHIVOS DE XAMPP
+# ============================
+
+# Carpetas temporales o locales que NO deben subirse
+tmp/
+log/
+logs/
+cache/
+
+# ============================
+#  BACKUPS
+# ============================
+
+*.bak
+*.old
+*.orig
+*.save
+*.zip
+*.rar
+
+# ============================
+#  SUBIDAS Y ARCHIVOS GENERADOS
+# ============================
+
+uploads/*
+generated/*
+export/*
+import/*
+
+# Permitir estructura de carpetas
+!uploads/.gitkeep
+!generated/.gitkeep
+!export/.gitkeep
+!import/.gitkeep
+
