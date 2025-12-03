@@ -3,7 +3,6 @@ require_once("../fpdf186/fpdf.php");
 require_once("../models/conexion.php");
 
 $sqlSelect="select*from estudiantes";
-
 $result=$conn->query($sqlSelect);
 
 $fpdf=new FPDF();
@@ -21,8 +20,6 @@ $fpdf->Cell(40,10,"Telefono");
 $fpdf->Cell(40,10,"Direccion");
 
 $fpdf->Ln();
-
-
 while($row=$result->fetch_array()){
 $cedula=$row["estcedula"];
 $nombre=$row["estnombre"];
@@ -34,14 +31,7 @@ $fpdf->cell(40,10,$nombre,1);
 $fpdf->cell(40,10,$apellido,1);
 $fpdf->cell(40,10,$telefono,1);
 $fpdf->cell(40,10,$direccion,1);
-
 $fpdf->Ln();
-
 }
-
-
-
-
 $fpdf->Output();
-
 ?>

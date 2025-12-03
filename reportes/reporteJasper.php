@@ -1,17 +1,13 @@
 <?php
-
 //configuración de JasperStarter
 $jasperstarter = '../reportes/JasperStarter/jasperstarter.bat';
-
 $jrxml  = '../reportes/jrxml-jasper/reporte.jrxml';
 $jasper = '../reportes/jrxml-jasper/reporte.jasper';
-
 $output = '../reportes/pdf/reporte';
 $jdbc   = '../reportes/JasperStarter/jdbc';
 
 //debug
 $DEBUG = false; // <-- CAMBIA A true SI QUIERES VER ERRORES
-
 
 //pasar de jrxml a jasper
 $cmdCompile = "\"$jasperstarter\" compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
@@ -57,7 +53,6 @@ if ($codeRun !== 0) {
 }
 
 //ENVIAR EL PDF AL NAVEGADOR O MOSTRAR RUTA
-
 $pdf = $output . ".pdf";
 
 if (!file_exists($pdf)) {
@@ -72,5 +67,4 @@ if (!$DEBUG) {
 } else {
     echo "<h3>PDF generado en: $pdf</h3>";
 }
-
 ?>
