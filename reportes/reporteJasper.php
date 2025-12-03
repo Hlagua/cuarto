@@ -1,24 +1,19 @@
 <?php
 
 //configuración de JasperStarter
+$jasperstarter = '../reportes/JasperStarter/jasperstarter.bat';
 
-$jasperstarter = 'C:/JasperStarter36/bin/jasperstarter.bat';
+$jrxml  = '../reportes/jrxml-jasper/reporte.jrxml';
+$jasper = '../reportes/jrxml-jasper/reporte.jasper';
 
-$jrxml  = 'C:/Users/Daniel/Documents/NetBeansProjects/Proyecto/CuartoUtaP/src/reportes/reporte.jrxml';
-$jasper = 'C:/Users/Daniel/Documents/NetBeansProjects/Proyecto/CuartoUtaP/src/reportes/reporte.jasper';
-
-$output = 'C:/Users/Daniel/Downloads/reporte';
-$jdbc   = 'C:/JasperStarter36/jdbc';
+$output = '../reportes/pdf/reporte';
+$jdbc   = '../reportes/JasperStarter/jdbc';
 
 //debug
-
 $DEBUG = false; // <-- CAMBIA A true SI QUIERES VER ERRORES
 
 
-/* ===================================================
-   1) COMPILAR
-   =================================================== */
-
+//pasar de jrxml a jasper
 $cmdCompile = "\"$jasperstarter\" compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
 $cmdCompileErr = $cmdCompile . " 2>&1";
 exec($cmdCompileErr, $outCompile, $codeCompile);
@@ -35,10 +30,7 @@ if ($codeCompile !== 0) {
     exit("<h3>❌ ERROR: Falló compilación del JRXML</h3>");
 }
 
-/* ===================================================
-   2) PROCESAR REPORTE
-   =================================================== */
-
+//PROCESAR REPORTE
 $cmdRun =
     "\"$jasperstarter\" process \"$jasper\" ".
     "-o \"$output\" -f pdf ".
@@ -64,9 +56,7 @@ if ($codeRun !== 0) {
     exit("<h3>❌ ERROR: Falló ejecución del reporte</h3>");
 }
 
-/* ===================================================
-   3) ENVIAR PDF
-   =================================================== */
+//ENVIAR EL PDF AL NAVEGADOR O MOSTRAR RUTA
 
 $pdf = $output . ".pdf";
 

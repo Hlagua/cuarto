@@ -34,8 +34,8 @@
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyUser()">Eliminar estudiante</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="openBuscar()">Buscar</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-reload" plain="true" onclick="limpiarBusqueda()">Limpiar</a>
-        <a href="http://localhost/cuarto/reporte.php" class="easyui-linkbutton" iconCls="icon-print" plain="true" target="_blank">Generar Reporte PDF</a>
-        <a href="http://localhost/cuarto/reporteJasper.php" class="easyui-linkbutton" iconCls="icon-print" plain="true" target="_blank">Generar Reporte Jasper</a>
+        <a href="http://localhost/cuarto/reportes/reporte.php" class="easyui-linkbutton" iconCls="icon-print" plain="true" target="_blank">Generar Reporte PDF</a>
+        <a href="http://localhost/cuarto/reportes/reporteJasper.php" class="easyui-linkbutton" iconCls="icon-print" plain="true" target="_blank">Generar Reporte Jasper</a>
         
     </div>
 
