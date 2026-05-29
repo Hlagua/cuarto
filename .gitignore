@@ -40,8 +40,7 @@ fpdf/*.php
 fpdf/*.txt
 fpdf/font/
 
-# No subir PDFs generados
-*.pdf
+
 
 # Composer (si se usa)
 vendor/
