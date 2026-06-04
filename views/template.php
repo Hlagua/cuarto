@@ -6,7 +6,9 @@
         <script src="js/operaciones.js"></script>
         <link rel="stylesheet" type="text/css" href="jquery/themes/default/easyui.css">
         <link rel="stylesheet" href="css/estilo.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <?php require_once "controllers/controller.php" ?>
+        <?php require_once "controllers/AuthController.php" ?>
     </head>
     <body>
         <header>
@@ -19,7 +21,15 @@
                 <li><a href="?accion=Nosotros" aria-label="Conocer sobre nosotros">Nosotros</a></li>
                 <li><a href="?accion=Servicios" aria-label="Ver servicios disponibles">Servicios</a></li>
                 <li><a href="?accion=Contactanos" aria-label="Contactar con nosotros">Contáctanos</a></li>
+                <?php if (AuthController::esAdmin()): ?>
+                <li><a href="?accion=Productos" aria-label="Administrar productos">Productos</a></li>
+                <?php endif; ?>
             </ul>
+            <?php if (AuthController::estaLogueado()): ?>
+            <p class="text-end small px-3 mb-0" style="color:#fff;">
+                Sesión: <?= htmlspecialchars($_SESSION['usuario']) ?> (<?= htmlspecialchars($_SESSION['rol']) ?>)
+            </p>
+            <?php endif; ?>
         </nav>
 
         <article role="main">

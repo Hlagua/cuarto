@@ -1,11 +1,11 @@
 <?php
 include_once ("conexion.php");
 
-$cedula = $_POST['estcedula'];
-$nombre = $_POST['estnombre'];
-$apellido = $_POST['estapellido'];
-$direccion = $_POST['estdireccion'];
-$telefono = $_POST['esttelefono'];
+$cedula = $_POST['cedula'];
+$nombre = $_POST['nombre'];
+$apellido = $_POST['apellido'];
+$direccion = $_POST['direccion'];
+$telefono = $_POST['telefono'];
 
 $sqlInsert = "insert into estudiantes values ('$cedula','$nombre','$apellido','$direccion','$telefono')";
 if($conn->query($sqlInsert)==true){

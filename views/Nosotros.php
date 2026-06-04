@@ -1,53 +1,168 @@
-        <link rel="stylesheet" href="css/style.css" />
+<?php
+require_once __DIR__ . '/../controllers/AuthController.php';
+require_once __DIR__ . '/../models/ProductoModel.php';
+require_once __DIR__ . '/../controllers/ProductoController.php';
+
+$logueado = AuthController::estaLogueado();
+$esCliente = AuthController::esCliente();
+$productos = $logueado ? ProductoModel::listar() : [];
+$carrito = $_SESSION['carrito'] ?? [];
+?>
+<link rel="stylesheet" href="css/style.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="uta-container">
-    
-    <h1 class="uta-title">Nuestra Identidad</h1>
-    <p class="uta-subtitle">Facultad de Ingeniería en Sistemas, Electrónica e Industrial</p>
+    <h1 class="uta-title">Nosotros — Tienda FISEI</h1>
 
-    <!-- Misión y Visión -->
-    <div class="uta-grid">
-        
-        <div class="uta-card primary">
-            <h3>Misión </h3>
-            <p>Formar profesionales líderes competentes, con visión humanista y pensamiento crítico a través de la Docencia, la Investigación y la Vinculación, que apliquen, promuevan y difundan el conocimiento respondiendo a las necesidades del país.</p>
+    <?php if (!$logueado): ?>
+        <div class="row justify-content-center mt-4">
+            <div class="col-md-5">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white">
+                        <strong>Iniciar sesión</strong>
+                    </div>
+                    <div class="card-body">
+                        <?php if (!empty($_SESSION['login_error'])): ?>
+                            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['login_error']) ?></div>
+                            <?php unset($_SESSION['login_error']); ?>
+                        <?php endif; ?>
+                        <form method="post" action="index.php?accion=Nosotros">
+                            <input type="hidden" name="accion_auth" value="login">
+                            <div class="mb-3">
+                                <label class="form-label">Usuario</label>
+                                <input type="text" name="usuario" class="form-control" required autocomplete="username">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Contraseña</label>
+                                <input type="password" name="password" class="form-control" required autocomplete="current-password">
+                            </div>
+                            <button type="submit" class="btn btn-danger w-100">Ingresar</button>
+                        </form>
+                        <p class="text-muted small mt-3 mb-0">
+                            Demo: admin / admin123 · cliente / cliente123
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="uta-card">
-            <h3>Visión </h3>
-            <p>La Universidad Técnica de Ambato por sus niveles de excelencia se constituirá como un centro de formación superior con liderazgo y proyección nacional e internacional.</p>
+        <div class="mt-5">
+            <h3 style="color: #781E24;">Nuestra Identidad</h3>
+            <p class="uta-subtitle">Facultad de Ingeniería en Sistemas, Electrónica e Industrial — UTA</p>
+            <p>Inicie sesión como cliente para ver el catálogo y realizar compras.</p>
         </div>
 
-    </div>
-
-    <!-- Sección Historia con Imagen al lado -->
-    <div class="uta-grid mt-4" style="align-items: center;">
-        
-        <div style="flex: 1; min-width: 300px;">
-            <h3 style="color: #781E24; text-transform: uppercase; margin-bottom: 20px;">Nuestra Historia</h3>
-            <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
-                La Universidad Técnica de Ambato fue creada el <strong>18 de abril de 1969</strong> según ley No. 69-05. Nació como respuesta a las necesidades educativas de la zona central del Ecuador.
-            </p>
-            <p style="line-height: 1.8; color: #555;">
-                A lo largo de las décadas, la UTA ha crecido exponencialmente, contando hoy con múltiples campus (Huachi, Ingahurco, Querochaca) y consolidándose como un referente de investigación científica.
-            </p>
-            
-            <h4 style="color: #D39C24; text-transform: uppercase; margin-top: 20px;">Valores Institucionales</h4>
-            <ul style="list-style: none; padding: 0; color: #666;">
-                <li style="margin-bottom: 5px;">✅ Identidad y Honestidad</li>
-                <li style="margin-bottom: 5px;">✅ Libertad de Pensamiento</li>
-                <li style="margin-bottom: 5px;">✅ Rigor Científico</li>
-            </ul>
+    <?php else: ?>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <p class="mb-0">Bienvenido, <strong><?= htmlspecialchars($_SESSION['usuario']) ?></strong>
+                (<?= htmlspecialchars($_SESSION['rol']) ?>)</p>
+            <form method="post" action="index.php?accion=Nosotros" class="d-inline">
+                <input type="hidden" name="accion_auth" value="logout">
+                <button type="submit" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+            </form>
         </div>
 
-        <div style="flex: 1; min-width: 300px;">
-            <!-- 
-               [IMAGEN 3]: Foto histórica o del campus actual.
-               Ruta sugerida: imagenes/banner-uta.jpeg 
-            -->
-            <img src="https://csei.uta.edu.ec/csei2020/images/galeria-uta/uta.png" alt="Campus UTA" class="uta-img-responsive" height="300px" />
+        <?php if (!empty($_SESSION['carrito_ok'])): ?>
+            <div class="alert alert-success"><?= htmlspecialchars($_SESSION['carrito_ok']) ?></div>
+            <?php unset($_SESSION['carrito_ok']); ?>
+        <?php endif; ?>
+        <?php if (!empty($_SESSION['carrito_error'])): ?>
+            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['carrito_error']) ?></div>
+            <?php unset($_SESSION['carrito_error']); ?>
+        <?php endif; ?>
+
+        <h2 class="h4 mt-4 mb-3">Productos disponibles</h2>
+        <div class="row g-4">
+            <?php if (empty($productos)): ?>
+                <div class="col-12"><p class="text-muted">No hay productos. El administrador puede agregarlos en Productos.</p></div>
+            <?php else: ?>
+                <?php foreach ($productos as $p): ?>
+                    <?php $img = ProductoController::rutaImagen($p['imagen']); ?>
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="card h-100 shadow-sm">
+                            <img src="<?= htmlspecialchars($img) ?>" class="card-img-top" alt="<?= htmlspecialchars($p['nombre']) ?>" style="height:200px;object-fit:cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><?= htmlspecialchars($p['nombre']) ?></h5>
+                                <p class="card-text flex-grow-1"><?= htmlspecialchars($p['descripcion']) ?></p>
+                                <p class="fw-bold text-danger fs-5 mb-2">$<?= number_format((float) $p['precio'], 2) ?></p>
+                                <?php if ($esCliente): ?>
+                                    <form method="post" action="index.php?accion=Nosotros" class="mt-auto">
+                                        <input type="hidden" name="accion_carrito" value="agregar">
+                                        <input type="hidden" name="producto_id" value="<?= (int) $p['id'] ?>">
+                                        <div class="input-group">
+                                            <input type="number" name="cantidad" value="1" min="1" class="form-control" style="max-width:80px">
+                                            <button type="submit" class="btn btn-danger">Agregar al carrito</button>
+                                        </div>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-    </div>
+        <?php if ($esCliente): ?>
+            <hr class="my-5">
+            <h2 class="h4 mb-3">Carrito de compras</h2>
+            <?php if (empty($carrito)): ?>
+                <p class="text-muted">Su carrito está vacío.</p>
+            <?php else: ?>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle" id="tablaCarrito">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio unit.</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($carrito as $item): ?>
+                                <tr data-precio="<?= (float) $item['precio'] ?>">
+                                    <td><?= htmlspecialchars($item['nombre']) ?></td>
+                                    <td class="precio-unit">$<?= number_format((float) $item['precio'], 2) ?></td>
+                                    <td>
+                                        <input type="number" name="cantidad[<?= (int) $item['id'] ?>]"
+                                               form="formActualizarCarrito"
+                                               value="<?= (int) $item['cantidad'] ?>" min="1"
+                                               class="form-control cantidad-input" style="max-width:90px">
+                                    </td>
+                                    <td class="subtotal-linea">$0.00</td>
+                                    <td>
+                                        <form method="post" action="index.php?accion=Nosotros" class="d-inline">
+                                            <input type="hidden" name="accion_carrito" value="eliminar">
+                                            <input type="hidden" name="producto_id" value="<?= (int) $item['id'] ?>">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="3" class="text-end">Total general</th>
+                                <th colspan="2" id="totalGeneral">$0.00</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <form method="post" action="index.php?accion=Nosotros" id="formActualizarCarrito" class="mb-3">
+                    <input type="hidden" name="accion_carrito" value="actualizar">
+                    <button type="submit" class="btn btn-secondary">Actualizar cantidades</button>
+                </form>
 
+                <form method="post" action="index.php?accion=Nosotros" class="mt-3">
+                    <input type="hidden" name="accion_carrito" value="finalizar">
+                    <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('¿Finalizar compra?');">
+                        Finalizar compra
+                    </button>
+                </form>
+                <script src="js/carrito.js"></script>
+            <?php endif; ?>
+        <?php endif; ?>
+
+    <?php endif; ?>
 </div>

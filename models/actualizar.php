@@ -1,18 +1,18 @@
 <?php 
 include "conexion.php";
 
-$cedula = $_GET['estcedula'];
-$nombre = $_POST['estnombre'];
-$apellido = $_POST['estapellido'];
-$direccion = $_POST['estdireccion'];
-$telefono = $_POST['esttelefono'];
+$cedula = $_GET['cedula'];
+$nombre = $_POST['nombre'];
+$apellido = $_POST['apellido'];
+$direccion = $_POST['direccion'];
+$telefono = $_POST['telefono'];
 
 $sqlUpdate = "UPDATE estudiantes SET 
-                estnombre='$nombre',
-                estapellido='$apellido',
-                estdireccion='$direccion',
-                esttelefono='$telefono'
-              WHERE estcedula='$cedula'";
+                nombre='$nombre',
+                apellido='$apellido',
+                direccion='$direccion',
+                telefono='$telefono'
+              WHERE cedula='$cedula'";
 
 if ($conn -> query($sqlUpdate)) {
     echo json_encode("Se actualizó correctamente");

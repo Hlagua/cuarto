@@ -1,8 +1,8 @@
 <?php
 include_once("conexion.php");
 
-$cedula = $_POST["estcedula"];
-$sqlDelete = "delete from estudiantes where estcedula = '$cedula'";
+$cedula = $_POST["cedula"];
+$sqlDelete = "delete from estudiantes where cedula = '$cedula'";
 if ($conn -> query($sqlDelete) === true) {
     echo json_encode(['success'=>true]);
 } else {

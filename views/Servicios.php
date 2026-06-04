@@ -19,11 +19,11 @@
            rownumbers="true" fitColumns="true" singleSelect="true">
         <thead>
             <tr>
-                <th field="estcedula" width="50">Cedula</th>
-                <th field="estnombre" width="50">Nombre</th>
-                <th field="estapellido" width="50">Apellido</th>
-                <th field="estdireccion" width="50">Direccion</th>
-                <th field="esttelefono" width="50">Telefono</th>
+                <th field="cedula" width="50">Cedula</th>
+                <th field="nombre" width="50">Nombre</th>
+                <th field="apellido" width="50">Apellido</th>
+                <th field="direccion" width="50">Direccion</th>
+                <th field="telefono" width="50">Telefono</th>
             </tr>
         </thead>
     </table>
@@ -45,19 +45,19 @@
         <form id="fm" method="post" novalidate style="margin:0;padding:20px 50px">
             <h3>Ingrese la informacion del estudiante</h3>
             <div style="margin-bottom:10px">
-                <input name="estcedula" class="easyui-textbox" required="true" label="Cedula:" style="width:100%">
+                <input name="cedula" class="easyui-textbox" required="true" label="Cedula:" style="width:100%">
             </div>
             <div style="margin-bottom:10px">
-                <input name="estnombre" class="easyui-textbox" required="true" label="Nombre:" style="width:100%">
+                <input name="nombre" class="easyui-textbox" required="true" label="Nombre:" style="width:100%">
             </div>
             <div style="margin-bottom:10px">
-                <input name="estapellido" class="easyui-textbox" required="true" label="Apellido:" style="width:100%">
+                <input name="apellido" class="easyui-textbox" required="true" label="Apellido:" style="width:100%">
             </div>
             <div style="margin-bottom:10px">
-                <input name="estdireccion" class="easyui-textbox" required="true" label="Direccion:" style="width:100%">
+                <input name="direccion" class="easyui-textbox" required="true" label="Direccion:" style="width:100%">
             </div>
             <div style="margin-bottom:10px">
-                <input name="esttelefono" class="easyui-textbox" required="true" label="Telefono:" style="width:100%">
+                <input name="telefono" class="easyui-textbox" required="true" label="Telefono:" style="width:100%">
             </div>
         </form>
     </div>
@@ -100,7 +100,7 @@ function editUser(){
     if (row){
         $('#dlg').dialog('open').dialog('center').dialog('setTitle','Editar estudiante');
         $('#fm').form('load',row);
-        url = 'models/actualizar.php?estcedula='+row.estcedula;
+        url = 'models/actualizar.php?cedula='+row.cedula;
     }
 }
 
@@ -134,7 +134,7 @@ function buscarUserDialog(){
 
     $('#dlgBuscar').dialog('close');
     $('#dg').datagrid('options').url = 'models/buscar.php';
-    $('#dg').datagrid('load',{ estcedula: cedula });
+    $('#dg').datagrid('load',{ cedula: cedula });
 }
 
 function limpiarBusqueda(){
@@ -147,7 +147,7 @@ function destroyUser(){
     if (row){
         $.messager.confirm('Confirma','¿Seguro desea eliminar?',function(r){
             if (r){
-                $.post('models/eliminar.php',{estcedula:row.estcedula},function(result){
+                $.post('models/eliminar.php',{cedula:row.cedula},function(result){
                     if (result.success){
                         $('#dg').datagrid('reload');
                     } else {

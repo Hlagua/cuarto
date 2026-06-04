@@ -4,7 +4,9 @@ Class enlacesPagina{
         if($enlacesModel == "Inicio" ||
            $enlacesModel == "Servicios" ||
            $enlacesModel == "Nosotros" ||
-           $enlacesModel == "Contactanos") {
+           $enlacesModel == "Contactanos" ||
+           $enlacesModel == "Productos" ||
+           $enlacesModel == "Factura") {
             $modulo = "views/".$enlacesModel.".php";
         } else {
             $modulo = "views/Inicio.php";   
