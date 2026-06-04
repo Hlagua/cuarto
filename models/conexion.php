@@ -1,12 +1,16 @@
 <?php
-$servername = "localhost:3306";
-$dbname = "cuarto";
-$username = "root";
-$password = "";
-//$conn = mysqli_connect($servername, $username, $password, $dbname);
-$conn=new mysqli($servername, $username, $password, $dbname);
-if (!$conn) {
-    die("Conexión fallida: " . mysqli_connect_error());
+$host = 'kodama.proxy.rlwy.net';
+$user = 'root'; 
+$pass = 'pzhkIBEHOQnMtGvEROfMaAOAHVdfhwFF';
+$db   = 'railway'; // Este es el nombre estándar que asigna Railway
+$port = 43206;
+
+$conn = new mysqli($host, $user, $pass, $db, $port);
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
 }
+echo "¡Conectado exitosamente a la nube!";
+
 
 ?>
