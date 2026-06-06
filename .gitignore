@@ -7,7 +7,7 @@
 /.env
 /.env.local
 
-fpdf186
+#fpdf186
 jquery
 
 # Config de editores
