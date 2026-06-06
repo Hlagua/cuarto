@@ -14,7 +14,7 @@ jquery
 /.vscode/
 
 # Librería FPDF (completa)
-fpdf186/
+#fpdf186/
 
 # Archivos de caché de PHP
 *.cache

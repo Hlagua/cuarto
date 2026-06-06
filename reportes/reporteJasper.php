@@ -7,7 +7,7 @@ $output = '../reportes/pdf/reporte';
 $jdbc   = '../reportes/JasperStarter/jdbc';
 
 //debug
-$DEBUG = false; // <-- CAMBIA A true SI QUIERES VER ERRORES
+$DEBUG = true; // <-- CAMBIA A true SI QUIERES VER ERRORES
 
 //pasar de jrxml a jasper
 $cmdCompile = "\"$jasperstarter\" compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
