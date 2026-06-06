@@ -1,16 +1,17 @@
 <?php
-//configuración de JasperStarter
-$jasperstarter = '../reportes/JasperStarter/jasperstarter.bat';
+//configuración de JasperStarter apuntando directamente al archivo .jar
+//Asume que copiaste la carpeta 'lib' dentro de 'reportes/JasperStarter/'
+$jasperstarter = 'java -jar ../reportes/JasperStarter/lib/jasperstarter.jar';
 $jrxml  = '../reportes/jrxml-jasper/reporte.jrxml';
 $jasper = '../reportes/jrxml-jasper/reporte.jasper';
 $output = '../reportes/pdf/reporte';
 $jdbc   = '../reportes/JasperStarter/jdbc';
 
 //debug
-$DEBUG = true; // <-- CAMBIA A true SI QUIERES VER ERRORES
+$DEBUG = false; // <-- CAMBIA A true SI QUIERES VER ERRORES
 
 //pasar de jrxml a jasper
-$cmdCompile = "\"$jasperstarter\" compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
+$cmdCompile = "$jasperstarter compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
 $cmdCompileErr = $cmdCompile . " 2>&1";
 exec($cmdCompileErr, $outCompile, $codeCompile);
 
@@ -26,15 +27,16 @@ if ($codeCompile !== 0) {
     exit("<h3>❌ ERROR: Falló compilación del JRXML</h3>");
 }
 
-//PROCESAR REPORTE
+//PROCESAR REPORTE (Conectado a Railway en lugar de localhost)
 $cmdRun =
-    "\"$jasperstarter\" process \"$jasper\" ".
+    "$jasperstarter process \"$jasper\" ".
     "-o \"$output\" -f pdf ".
     "-t mysql ".
-    "-H localhost ".
+    "-H kodama.proxy.rlwy.net ".
+    "--db-port 43206 ".
     "-u root ".
-    "-p \"\" ".
-    "-n cuarto ".
+    "-p \"pzhkIBEHOQnMtGvEROfMaAOAHVdfhwFF\" ".
+    "-n railway ".
     "--jdbc-dir \"$jdbc\"";
 
 $cmdRunErr = $cmdRun . " 2>&1";
@@ -52,7 +54,7 @@ if ($codeRun !== 0) {
     exit("<h3>❌ ERROR: Falló ejecución del reporte</h3>");
 }
 
-//ENVIAR EL PDF AL NAVEGADOR O MOSTRAR RUTA
+//ENVIAR EL PDF AL NAVEGADOR
 $pdf = $output . ".pdf";
 
 if (!file_exists($pdf)) {
