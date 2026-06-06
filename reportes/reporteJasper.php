@@ -1,33 +1,16 @@
 <?php
-//configuración de JasperStarter apuntando directamente al archivo .jar
-//Asume que copiaste la carpeta 'lib' dentro de 'reportes/JasperStarter/'
+// Rutas de JasperStarter
 $jasperstarter = 'java -jar ../reportes/JasperStarter/lib/jasperstarter.jar';
-$jrxml  = '../reportes/jrxml-jasper/reporte.jrxml';
 $jasper = '../reportes/jrxml-jasper/reporte.jasper';
-$output = '../reportes/pdf/reporte';
+
+// CAMBIO CRUCIAL: Guardamos el PDF en la carpeta temporal de Linux
+$output = '/tmp/reporte_estudiantes'; 
 $jdbc   = '../reportes/JasperStarter/jdbc';
 
-//debug
-$DEBUG = true; // <-- CAMBIA A true SI QUIERES VER ERRORES
+$DEBUG = true; // Déjalo en true para la última prueba
 
-//pasar de jrxml a jasper
-$cmdCompile = "$jasperstarter compile \"$jrxml\" -o \"" . dirname($jasper) . "\"";
-$cmdCompileErr = $cmdCompile . " 2>&1";
-exec($cmdCompileErr, $outCompile, $codeCompile);
-
-if ($DEBUG) {
-    echo "<h2>DEBUG COMPILACIÓN</h2><pre>";
-    echo "CMD: $cmdCompileErr\n\n";
-    print_r($outCompile);
-    echo "CODE: $codeCompile";
-    echo "</pre>";
-}
-
-if ($codeCompile !== 0) {
-    exit("<h3>❌ ERROR: Falló compilación del JRXML</h3>");
-}
-
-//PROCESAR REPORTE (Conectado a Railway en lugar de localhost)
+// Nos saltamos la compilación porque reporte.jasper ya existe en el servidor.
+// PROCESAR REPORTE DIRECTAMENTE:
 $cmdRun =
     "$jasperstarter process \"$jasper\" ".
     "-o \"$output\" -f pdf ".
@@ -54,7 +37,7 @@ if ($codeRun !== 0) {
     exit("<h3>❌ ERROR: Falló ejecución del reporte</h3>");
 }
 
-//ENVIAR EL PDF AL NAVEGADOR
+// ENVIAR EL PDF AL NAVEGADOR
 $pdf = $output . ".pdf";
 
 if (!file_exists($pdf)) {
@@ -63,10 +46,14 @@ if (!file_exists($pdf)) {
 
 if (!$DEBUG) {
     header("Content-Type: application/pdf");
-    header("Content-Disposition: inline; filename=reporte.pdf");
+    header("Content-Disposition: inline; filename=Reporte_Final.pdf");
     readfile($pdf);
+    
+    // Opcional: borrar el temporal después de mostrarlo para no llenar la memoria
+    unlink($pdf);
     exit;
 } else {
-    echo "<h3>PDF generado en: $pdf</h3>";
+    echo "<h3>¡ÉXITO! PDF generado en: $pdf</h3>";
+    echo "<p>Cambia \$DEBUG = false; para que el PDF se descargue o se muestre en pantalla automáticamente.</p>";
 }
 ?>
