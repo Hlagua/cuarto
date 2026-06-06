@@ -1,2 +1,2 @@
 [phases.setup]
-nixPkgs = ["...", "openjdk17", "fontconfig"]
+nixPkgs = ["...", "jdk8", "fontconfig"]
