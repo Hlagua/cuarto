@@ -7,7 +7,7 @@ $jasper = '../reportes/jrxml-jasper/reporte.jasper';
 $output = '/tmp/reporte_estudiantes'; 
 $jdbc   = '../reportes/JasperStarter/jdbc';
 
-$DEBUG = true; // Déjalo en true para la última prueba
+$DEBUG = false; // Déjalo en true para la última prueba
 
 // Nos saltamos la compilación porque reporte.jasper ya existe en el servidor.
 // PROCESAR REPORTE DIRECTAMENTE:
