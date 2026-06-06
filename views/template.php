@@ -24,6 +24,9 @@
                 <?php if (AuthController::esAdmin()): ?>
                 <li><a href="?accion=Productos" aria-label="Administrar productos">Productos</a></li>
                 <?php endif; ?>
+                <?php if (AuthController::estaLogueado()): ?>
+                <li><a href="?accion=ResumenFacturacion" aria-label="Total de Facturas Generadas">Total de Facturas Generadas</a></li>
+                <?php endif; ?>
             </ul>
             <?php if (AuthController::estaLogueado()): ?>
             <p class="text-end small px-3 mb-0" style="color:#fff;">

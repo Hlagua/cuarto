@@ -22,7 +22,7 @@ $detalles = $datos['detalles'];
 
 <div class="container py-4">
     <div class="card shadow">
-        <div class="card-header bg-success text-white">
+        <div class="card-header bg-danger text-white">
             <h1 class="h4 mb-0">Factura de venta #<?= (int) $venta['id'] ?></h1>
         </div>
         <div class="card-body">

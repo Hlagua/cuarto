@@ -68,4 +68,39 @@ class VentaModel
 
         return ['venta' => $venta, 'detalles' => $detalles];
     }
+
+    public static function obtenerResumenFacturacion()
+    {
+        global $conn;
+        $sql = 'SELECT COUNT(*) AS total_facturas, IFNULL(SUM(total), 0) AS monto_total, IFNULL(AVG(total), 0) AS promedio_factura FROM ventas';
+        $resultado = $conn->query($sql);
+        if ($resultado) {
+            $fila = $resultado->fetch_assoc();
+            return [
+                'total_facturas' => (int) $fila['total_facturas'],
+                'monto_total' => (float) $fila['monto_total'],
+                'promedio_factura' => (float) $fila['promedio_factura']
+            ];
+        }
+        return [
+            'total_facturas' => 0,
+            'monto_total' => 0.0,
+            'promedio_factura' => 0.0
+        ];
+    }
+
+    public static function obtenerVentasRecientes($limite = 10)
+    {
+        global $conn;
+        $sql = 'SELECT id, fecha, total FROM ventas ORDER BY id DESC LIMIT ?';
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param('i', $limite);
+            $stmt->execute();
+            $res = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+            return $res;
+        }
+        return [];
+    }
 }

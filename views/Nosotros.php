@@ -38,9 +38,7 @@ $carrito = $_SESSION['carrito'] ?? [];
                             </div>
                             <button type="submit" class="btn btn-danger w-100">Ingresar</button>
                         </form>
-                        <p class="text-muted small mt-3 mb-0">
-                            Demo: admin / admin123 · cliente / cliente123
-                        </p>
+                        
                     </div>
                 </div>
             </div>
@@ -149,14 +147,13 @@ $carrito = $_SESSION['carrito'] ?? [];
                         </tfoot>
                     </table>
                 </div>
-                <form method="post" action="index.php?accion=Nosotros" id="formActualizarCarrito" class="mb-3">
+                <form method="post" action="index.php?accion=Nosotros" id="formActualizarCarrito" class="d-none">
                     <input type="hidden" name="accion_carrito" value="actualizar">
-                    <button type="submit" class="btn btn-secondary">Actualizar cantidades</button>
                 </form>
 
                 <form method="post" action="index.php?accion=Nosotros" class="mt-3">
                     <input type="hidden" name="accion_carrito" value="finalizar">
-                    <button type="submit" class="btn btn-success btn-lg" onclick="return confirm('¿Finalizar compra?');">
+                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('¿Finalizar compra?');">
                         Finalizar compra
                     </button>
                 </form>

@@ -30,7 +30,15 @@
         recalcular();
         document.querySelectorAll('.cantidad-input').forEach(function (input) {
             input.addEventListener('input', recalcular);
-            input.addEventListener('change', recalcular);
+            input.addEventListener('change', function () {
+                var formId = input.getAttribute('form');
+                if (formId) {
+                    var form = document.getElementById(formId);
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            });
         });
     });
 })();
