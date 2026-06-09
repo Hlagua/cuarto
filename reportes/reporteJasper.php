@@ -1,6 +1,6 @@
 <?php
 // Rutas de JasperStarter
-$jasperstarter = 'java --add-opens java.base/jdk.internal.loader=ALL-UNNAMED -jar ../reportes/JasperStarter/lib/jasperstarter.jar';
+$jasperstarter = '/opt/java/openjdk8/bin/java -jar ../reportes/JasperStarter/lib/jasperstarter.jar';
 $jasper = '../reportes/jrxml-jasper/reporte.jasper';
 
 // CAMBIO CRUCIAL: Guardamos el PDF en la carpeta temporal de Linux
