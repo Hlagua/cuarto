@@ -1,7 +1,7 @@
 # 1. Base oficial de PHP 8.2 con Apache
 FROM php:8.2-apache
 
-# 2. Instalar dependencias del sistema que tenías en Nixpacks
+# 2. Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     default-jre \
     fontconfig \
@@ -26,28 +26,26 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 # 6. Habilitar mod_rewrite (esencial para tu index.php?accion=...)
 RUN a2enmod rewrite
 
-# 7. Configurar Apache para que escuche el PUERTO dinámico de Railway
-RUN sed -i 's/Listen 80/Listen ${PORT:-80}/g' /etc/apache2/ports.conf
-RUN sed -i 's/<VirtualHost \*:80>/<VirtualHost \*:${PORT:-80}>/g' /etc/apache2/sites-available/000-default.conf
-
-# 8. Copiar tu código al contenedor
+# 7. Copiar tu código al contenedor
 WORKDIR /app
 COPY . /app
 
-# 9. LA SOLUCIÓN A LOS PERMISOS: Script de arranque
-# Este script se ejecuta CADA VEZ que el servidor nace. 
-# Primero instala dependencias de composer, luego fuerza al Volumen a ser de PHP, y finalmente enciende Apache.
-# 9. SOLUCIÓN CORREGIDA: Desactivar conflictos de Apache antes de arrancar
+# 8. LA SOLUCIÓN AL PUERTO Y A LOS PERMISOS
+# Movemos la configuración del puerto aquí para que se evalúe correctamente al arrancar
+# 8. LA SOLUCIÓN AL PUERTO Y A LOS PERMISOS
+# Ahora forzamos el puerto 8080 explícitamente en la configuración
 RUN echo '#!/bin/bash\n\
 a2dismod mpm_event mpm_worker\n\
 a2enmod mpm_prefork\n\
+sed -i "s/Listen 80/Listen 8080/g" /etc/apache2/ports.conf\n\
+sed -i "s/<VirtualHost \*:80>/<VirtualHost *:8080>/g" /etc/apache2/sites-available/000-default.conf\n\
 composer install --ignore-platform-reqs --no-interaction\n\
 mkdir -p /app/imagenes/productos\n\
 chown -R www-data:www-data /app/imagenes/productos\n\
 chmod -R 775 /app/imagenes/productos\n\
 exec apache2-foreground' > /start.sh
 
-# Dar permisos de ejecución al script
+# 9. Dar permisos de ejecución al script
 RUN chmod +x /start.sh
 
 # 10. Comando final
