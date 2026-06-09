@@ -3,7 +3,7 @@ FROM php:8.2-apache
 
 # 2. Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    default-jre \
+    openjdk-8-jre \
     fontconfig \
     nodejs \
     npm \
