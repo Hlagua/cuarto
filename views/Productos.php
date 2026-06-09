@@ -53,6 +53,20 @@ $editar = $editarId ? ProductoModel::obtenerPorId($editarId) : null;
                                    value="<?= $editar ? (float) $editar['precio'] : '' ?>">
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Stock disponible</label>
+                            <input type="number" name="stock" min="0" class="form-control" required
+                                   value="<?= $editar ? (int) $editar['stock'] : '0' ?>">
+                        </div>
+                        <?php if ($editar): ?>
+                            <div class="mb-3">
+                                <label class="form-label">Estado</label>
+                                <select name="activo" class="form-select">
+                                    <option value="1" <?= (int)$editar['activo'] === 1 ? 'selected' : '' ?>>Activo</option>
+                                    <option value="0" <?= (int)$editar['activo'] === 0 ? 'selected' : '' ?>>Inactivo</option>
+                                </select>
+                            </div>
+                        <?php endif; ?>
+                        <div class="mb-3">
                             <label class="form-label">Imagen<?= $editar ? ' (opcional)' : '' ?></label>
                             <input type="file" name="imagen" class="form-control" accept="image/*" <?= $editar ? '' : '' ?>>
                             <?php if ($editar): ?>
@@ -77,6 +91,8 @@ $editar = $editarId ? ProductoModel::obtenerPorId($editarId) : null;
                             <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Estado</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -90,10 +106,18 @@ $editar = $editarId ? ProductoModel::obtenerPorId($editarId) : null;
                                 </td>
                                 <td><?= htmlspecialchars($p['nombre']) ?></td>
                                 <td>$<?= number_format((float) $p['precio'], 2) ?></td>
+                                <td><?= (int) $p['stock'] ?></td>
+                                <td>
+                                    <?php if ((int)$p['activo'] === 1): ?>
+                                        <span class="badge bg-success">Activo</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary">Inactivo</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td>
                                     <a href="index.php?accion=Productos&editar=<?= (int) $p['id'] ?>" class="btn btn-sm btn-warning">Editar</a>
                                     <form method="post" action="index.php?accion=Productos" class="d-inline"
-                                          onsubmit="return confirm('¿Eliminar este producto?');">
+                                          onsubmit="return confirm('¿Seguro que desea eliminar/desactivar este producto?');">
                                         <input type="hidden" name="accion_producto" value="eliminar">
                                         <input type="hidden" name="id" value="<?= (int) $p['id'] ?>">
                                         <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>

@@ -51,8 +51,23 @@ class CarritoController
             exit;
         }
 
+        if ((int)$producto['activo'] !== 1) {
+            $_SESSION['carrito_error'] = 'El producto no está disponible.';
+            header('Location: index.php?accion=Nosotros');
+            exit;
+        }
+
+        $cantExistente = isset($_SESSION['carrito'][$id]) ? $_SESSION['carrito'][$id]['cantidad'] : 0;
+        $totalRequerido = $cantExistente + $cantidad;
+
+        if ($totalRequerido > (int)$producto['stock']) {
+            $_SESSION['carrito_error'] = 'No hay suficiente stock para "' . $producto['nombre'] . '". Stock disponible: ' . $producto['stock'] . ' (ya tienes ' . $cantExistente . ' en el carrito).';
+            header('Location: index.php?accion=Nosotros');
+            exit;
+        }
+
         if (isset($_SESSION['carrito'][$id])) {
-            $_SESSION['carrito'][$id]['cantidad'] += $cantidad;
+            $_SESSION['carrito'][$id]['cantidad'] = $totalRequerido;
         } else {
             $_SESSION['carrito'][$id] = [
                 'id' => $producto['id'],
@@ -71,14 +86,34 @@ class CarritoController
     private static function actualizar()
     {
         $cantidades = $_POST['cantidad'] ?? [];
+        $advertencias = [];
         foreach ($cantidades as $id => $cant) {
             $id = (int) $id;
             $cant = max(1, (int) $cant);
+
+            $producto = ProductoModel::obtenerPorId($id);
+            if (!$producto || (int)$producto['activo'] !== 1) {
+                unset($_SESSION['carrito'][$id]);
+                $advertencias[] = 'Un producto ya no está activo y fue removido de tu carrito.';
+                continue;
+            }
+
+            if ($cant > (int)$producto['stock']) {
+                $cant = (int)$producto['stock'];
+                $advertencias[] = 'La cantidad de "' . $producto['nombre'] . '" se limitó a ' . $cant . ' por falta de stock.';
+            }
+
             if (isset($_SESSION['carrito'][$id])) {
                 $_SESSION['carrito'][$id]['cantidad'] = $cant;
             }
         }
-        $_SESSION['carrito_ok'] = 'Cantidades actualizadas.';
+
+        if (!empty($advertencias)) {
+            $_SESSION['carrito_error'] = implode('<br>', $advertencias);
+        } else {
+            $_SESSION['carrito_ok'] = 'Cantidades actualizadas.';
+        }
+
         header('Location: index.php?accion=Nosotros');
         exit;
     }
@@ -106,11 +141,29 @@ class CarritoController
             exit;
         }
 
+        // Validación final de stock antes de pasar al modelo
+        foreach ($_SESSION['carrito'] as $id => $item) {
+            $producto = ProductoModel::obtenerPorId($id);
+            if (!$producto || (int)$producto['activo'] !== 1) {
+                $_SESSION['carrito_error'] = 'El producto "' . $item['nombre'] . '" ya no está disponible. Actualiza tu carrito.';
+                header('Location: index.php?accion=Nosotros');
+                exit;
+            }
+            if ((int)$item['cantidad'] > (int)$producto['stock']) {
+                $_SESSION['carrito_error'] = 'Stock insuficiente para el producto "' . $producto['nombre'] . '". Stock disponible: ' . $producto['stock'] . '. Por favor, actualiza la cantidad en tu carrito.';
+                header('Location: index.php?accion=Nosotros');
+                exit;
+            }
+        }
+
         $items = array_values($_SESSION['carrito']);
         $ventaId = VentaModel::registrarVenta($items);
 
         if (!$ventaId) {
-            $_SESSION['carrito_error'] = 'No se pudo registrar la venta.';
+            // El mensaje detallado ya viene de VentaModel en $_SESSION['carrito_error']
+            if (empty($_SESSION['carrito_error'])) {
+                $_SESSION['carrito_error'] = 'No se pudo registrar la venta.';
+            }
             header('Location: index.php?accion=Nosotros');
             exit;
         }

@@ -5,7 +5,7 @@ require_once __DIR__ . '/../controllers/ProductoController.php';
 
 $logueado = AuthController::estaLogueado();
 $esCliente = AuthController::esCliente();
-$productos = $logueado ? ProductoModel::listar() : [];
+$productos = $logueado ? ProductoModel::listar(true) : [];
 $carrito = $_SESSION['carrito'] ?? [];
 ?>
 <link rel="stylesheet" href="css/style.css" />
@@ -83,15 +83,31 @@ $carrito = $_SESSION['carrito'] ?? [];
                                 <h5 class="card-title"><?= htmlspecialchars($p['nombre']) ?></h5>
                                 <p class="card-text flex-grow-1"><?= htmlspecialchars($p['descripcion']) ?></p>
                                 <p class="fw-bold text-danger fs-5 mb-2">$<?= number_format((float) $p['precio'], 2) ?></p>
+                                
+                                <p class="mb-2 small">
+                                    <strong>Stock:</strong> 
+                                    <?php if ((int)$p['stock'] > 0): ?>
+                                        <span class="badge bg-success"><?= (int)$p['stock'] ?> disponibles</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-danger">Agotado</span>
+                                    <?php endif; ?>
+                                </p>
+
                                 <?php if ($esCliente): ?>
-                                    <form method="post" action="index.php?accion=Nosotros" class="mt-auto">
-                                        <input type="hidden" name="accion_carrito" value="agregar">
-                                        <input type="hidden" name="producto_id" value="<?= (int) $p['id'] ?>">
-                                        <div class="input-group">
-                                            <input type="number" name="cantidad" value="1" min="1" class="form-control" style="max-width:80px">
-                                            <button type="submit" class="btn btn-danger">Agregar al carrito</button>
+                                    <?php if ((int)$p['stock'] > 0): ?>
+                                        <form method="post" action="index.php?accion=Nosotros" class="mt-auto">
+                                            <input type="hidden" name="accion_carrito" value="agregar">
+                                            <input type="hidden" name="producto_id" value="<?= (int) $p['id'] ?>">
+                                            <div class="input-group">
+                                                <input type="number" name="cantidad" value="1" min="1" max="<?= (int)$p['stock'] ?>" class="form-control" style="max-width:80px">
+                                                <button type="submit" class="btn btn-danger">Agregar al carrito</button>
+                                            </div>
+                                        </form>
+                                    <?php else: ?>
+                                        <div class="mt-auto">
+                                            <button class="btn btn-secondary w-100" disabled>Agotado</button>
                                         </div>
-                                    </form>
+                                    <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
@@ -118,15 +134,19 @@ $carrito = $_SESSION['carrito'] ?? [];
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($carrito as $item): ?>
+                            <?php foreach ($carrito as $item): 
+                                $prodDB = ProductoModel::obtenerPorId($item['id']);
+                                $maxStock = $prodDB ? (int)$prodDB['stock'] : 999;
+                            ?>
                                 <tr data-precio="<?= (float) $item['precio'] ?>">
                                     <td><?= htmlspecialchars($item['nombre']) ?></td>
                                     <td class="precio-unit">$<?= number_format((float) $item['precio'], 2) ?></td>
                                     <td>
                                         <input type="number" name="cantidad[<?= (int) $item['id'] ?>]"
                                                form="formActualizarCarrito"
-                                               value="<?= (int) $item['cantidad'] ?>" min="1"
+                                               value="<?= (int) $item['cantidad'] ?>" min="1" max="<?= $maxStock ?>"
                                                class="form-control cantidad-input" style="max-width:90px">
+                                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Máx. disponible: <?= $maxStock ?></small>
                                     </td>
                                     <td class="subtotal-linea">$0.00</td>
                                     <td>

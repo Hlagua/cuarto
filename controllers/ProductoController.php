@@ -73,16 +73,30 @@ class ProductoController
         $nombre = trim($_POST['nombre'] ?? '');
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = (float) ($_POST['precio'] ?? 0);
+        $stock = isset($_POST['stock']) ? (int)$_POST['stock'] : 0;
         $imagen = self::subirImagen();
 
-        if ($nombre === '' || $descripcion === '' || $precio <= 0) {
-            $_SESSION['producto_error'] = 'Complete todos los campos obligatorios.';
+        // Validaciones del servidor
+        if ($nombre === '' || $descripcion === '') {
+            $_SESSION['producto_error'] = 'El nombre y la descripción son obligatorios.';
+            header('Location: index.php?accion=Productos');
+            exit;
+        }
+
+        if ($precio <= 0) {
+            $_SESSION['producto_error'] = 'El precio debe ser un número positivo mayor que cero.';
+            header('Location: index.php?accion=Productos');
+            exit;
+        }
+
+        if ($stock < 0) {
+            $_SESSION['producto_error'] = 'El stock inicial no puede ser negativo.';
             header('Location: index.php?accion=Productos');
             exit;
         }
 
         if ($imagen === false) {
-            $_SESSION['producto_error'] = 'Imagen no válida.';
+            $_SESSION['producto_error'] = 'Archivo de imagen no válido. Use formatos permitidos (jpg, png, gif, webp).';
             header('Location: index.php?accion=Productos');
             exit;
         }
@@ -91,8 +105,8 @@ class ProductoController
             $imagen = 'sin_imagen.jpg';
         }
 
-        ProductoModel::guardar($nombre, $descripcion, $precio, $imagen);
-        $_SESSION['producto_ok'] = 'Producto creado correctamente.';
+        ProductoModel::guardar($nombre, $descripcion, $precio, $imagen, $stock);
+        $_SESSION['producto_ok'] = 'Producto creado correctamente con stock inicial de ' . $stock . '.';
         header('Location: index.php?accion=Productos');
         exit;
     }
@@ -110,10 +124,31 @@ class ProductoController
         $nombre = trim($_POST['nombre'] ?? '');
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = (float) ($_POST['precio'] ?? 0);
+        $stock = isset($_POST['stock']) ? (int)$_POST['stock'] : 0;
+        $activo = isset($_POST['activo']) ? (int)$_POST['activo'] : 1;
         $imagen = self::subirImagen();
+
+        // Validaciones del servidor
+        if ($nombre === '' || $descripcion === '') {
+            $_SESSION['producto_error'] = 'El nombre y la descripción son obligatorios.';
+            header('Location: index.php?accion=Productos&editar=' . $id);
+            exit;
+        }
+
+        if ($precio <= 0) {
+            $_SESSION['producto_error'] = 'El precio debe ser un número positivo mayor que cero.';
+            header('Location: index.php?accion=Productos&editar=' . $id);
+            exit;
+        }
+
+        if ($stock < 0) {
+            $_SESSION['producto_error'] = 'El stock no puede ser negativo.';
+            header('Location: index.php?accion=Productos&editar=' . $id);
+            exit;
+        }
         
         if ($imagen === false) {
-            $_SESSION['producto_error'] = 'Imagen no válida.';
+            $_SESSION['producto_error'] = 'Archivo de imagen no válido.';
             header('Location: index.php?accion=Productos&editar=' . $id);
             exit;
         }
@@ -121,8 +156,8 @@ class ProductoController
             $imagen = $producto['imagen'];
         }
 
-        ProductoModel::actualizar($id, $nombre, $descripcion, $precio, $imagen);
-        $_SESSION['producto_ok'] = 'Producto actualizado.';
+        ProductoModel::actualizar($id, $nombre, $descripcion, $precio, $imagen, $stock, $activo);
+        $_SESSION['producto_ok'] = 'Producto actualizado correctamente.';
         header('Location: index.php?accion=Productos');
         exit;
     }
@@ -130,8 +165,19 @@ class ProductoController
     private static function eliminar()
     {
         $id = (int) ($_POST['id'] ?? 0);
-        ProductoModel::eliminar($id);
-        $_SESSION['producto_ok'] = 'Producto eliminado.';
+        if ($id <= 0) {
+            $_SESSION['producto_error'] = 'ID de producto no válido.';
+            header('Location: index.php?accion=Productos');
+            exit;
+        }
+
+        if (ProductoModel::estaFacturado($id)) {
+            ProductoModel::desactivar($id);
+            $_SESSION['producto_ok'] = 'El producto ya ha sido facturado. Se ha desactivado (no aparecerá en el catálogo) para proteger el historial de ventas.';
+        } else {
+            ProductoModel::eliminar($id);
+            $_SESSION['producto_ok'] = 'Producto eliminado físicamente de la base de datos ya que no poseía facturas asociadas.';
+        }
         header('Location: index.php?accion=Productos');
         exit;
     }

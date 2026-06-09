@@ -17,7 +17,9 @@ $queries = [
         nombre VARCHAR(100) NOT NULL,
         descripcion TEXT NOT NULL,
         precio DECIMAL(10, 2) NOT NULL,
-        imagen VARCHAR(255) NOT NULL DEFAULT 'sin_imagen.jpg'
+        imagen VARCHAR(255) NOT NULL DEFAULT 'sin_imagen.jpg',
+        stock INT NOT NULL DEFAULT 0,
+        activo TINYINT NOT NULL DEFAULT 1
     )",
     "CREATE TABLE IF NOT EXISTS ventas (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -57,13 +59,13 @@ foreach ($usuarios as $u) {
 $count = $conn->query('SELECT COUNT(*) AS c FROM productos')->fetch_assoc()['c'];
 if ((int) $count === 0) {
     $productos = [
-        ['Laptop UTA', 'Laptop para estudiantes de la FISEI', 850.00, 'sin_imagen.jpg'],
-        ['Mouse inalámbrico', 'Mouse ergonómico color negro', 15.50, 'sin_imagen.jpg'],
-        ['Teclado mecánico', 'Teclado RGB switches azules', 45.00, 'sin_imagen.jpg'],
+        ['Laptop UTA', 'Laptop para estudiantes de la FISEI', 850.00, 'sin_imagen.jpg', 10],
+        ['Mouse inalámbrico', 'Mouse ergonómico color negro', 15.50, 'sin_imagen.jpg', 30],
+        ['Teclado mecánico', 'Teclado RGB switches azules', 45.00, 'sin_imagen.jpg', 20],
     ];
-    $stmt = $conn->prepare('INSERT INTO productos (nombre, descripcion, precio, imagen) VALUES (?, ?, ?, ?)');
+    $stmt = $conn->prepare('INSERT INTO productos (nombre, descripcion, precio, imagen, stock) VALUES (?, ?, ?, ?, ?)');
     foreach ($productos as $p) {
-        $stmt->bind_param('ssds', $p[0], $p[1], $p[2], $p[3]);
+        $stmt->bind_param('ssdsi', $p[0], $p[1], $p[2], $p[3], $p[4]);
         $stmt->execute();
     }
     $stmt->close();

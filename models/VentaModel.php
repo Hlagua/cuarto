@@ -23,7 +23,24 @@ class VentaModel
                 'INSERT INTO detalle_venta (venta_id, producto_id, cantidad, subtotal) VALUES (?, ?, ?, ?)'
             );
 
+            $stmtStock = $conn->prepare('SELECT stock, activo, nombre FROM productos WHERE id = ? FOR UPDATE');
+            $stmtUpdateStock = $conn->prepare('UPDATE productos SET stock = stock - ? WHERE id = ?');
+
             foreach ($items as $item) {
+                $stmtStock->bind_param('i', $item['id']);
+                $stmtStock->execute();
+                $res = $stmtStock->get_result()->fetch_assoc();
+
+                if (!$res) {
+                    throw new Exception('Producto ID ' . $item['id'] . ' no encontrado.');
+                }
+                if ((int)$res['activo'] !== 1) {
+                    throw new Exception('El producto "' . $res['nombre'] . '" no está activo/disponible.');
+                }
+                if ((int)$res['stock'] < (int)$item['cantidad']) {
+                    throw new Exception('Stock insuficiente para el producto "' . $res['nombre'] . '". Disponibles: ' . $res['stock'] . ', solicitados: ' . $item['cantidad']);
+                }
+
                 $subtotal = $item['precio'] * $item['cantidad'];
                 $stmtDet->bind_param(
                     'iiid',
@@ -33,12 +50,19 @@ class VentaModel
                     $subtotal
                 );
                 $stmtDet->execute();
+
+                $stmtUpdateStock->bind_param('ii', $item['cantidad'], $item['id']);
+                $stmtUpdateStock->execute();
             }
+
+            $stmtStock->close();
+            $stmtUpdateStock->close();
             $stmtDet->close();
             $conn->commit();
             return $ventaId;
         } catch (Exception $e) {
             $conn->rollback();
+            $_SESSION['carrito_error'] = 'Error en facturación: ' . $e->getMessage();
             return false;
         }
     }

@@ -15,7 +15,9 @@ CREATE TABLE IF NOT EXISTS productos (
     nombre VARCHAR(100) NOT NULL,
     descripcion TEXT NOT NULL,
     precio DECIMAL(10, 2) NOT NULL,
-    imagen VARCHAR(255) NOT NULL DEFAULT 'sin_imagen.jpg'
+    imagen VARCHAR(255) NOT NULL DEFAULT 'sin_imagen.jpg',
+    stock INT NOT NULL DEFAULT 0,
+    activo TINYINT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE IF NOT EXISTS ventas (
