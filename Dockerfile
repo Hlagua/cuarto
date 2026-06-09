@@ -37,7 +37,10 @@ COPY . /app
 # 9. LA SOLUCIÓN A LOS PERMISOS: Script de arranque
 # Este script se ejecuta CADA VEZ que el servidor nace. 
 # Primero instala dependencias de composer, luego fuerza al Volumen a ser de PHP, y finalmente enciende Apache.
+# 9. SOLUCIÓN CORREGIDA: Desactivar conflictos de Apache antes de arrancar
 RUN echo '#!/bin/bash\n\
+a2dismod mpm_event mpm_worker\n\
+a2enmod mpm_prefork\n\
 composer install --ignore-platform-reqs --no-interaction\n\
 mkdir -p /app/imagenes/productos\n\
 chown -R www-data:www-data /app/imagenes/productos\n\
