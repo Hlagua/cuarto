@@ -1,9 +1,9 @@
 # 1. Base oficial de PHP 8.2 con Apache
 FROM php:8.2-apache
 
-# 2. Instalar dependencias del sistema (usamos openjdk-17-jre)
+# 2. Instalar dependencias del sistema (usamos default-jre que es el paquete universal de Debian)
 RUN apt-get update && apt-get install -y \
-    openjdk-17-jre \
+    default-jre \
     fontconfig \
     nodejs \
     npm \
@@ -15,22 +15,22 @@ RUN apt-get update && apt-get install -y \
 # 3. Instalar la extensión mysqli (y PDO por si acaso)
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# 4. Instalar Composer
+# 4. Instalar Composer (copiándolo de la imagen oficial)
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 5. Configurar Apache
+# 5. Configurar Apache para que la raíz sea /app
 ENV APACHE_DOCUMENT_ROOT=/app
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# 6. Habilitar mod_rewrite
+# 6. Habilitar mod_rewrite (esencial para el ruteo de la app)
 RUN a2enmod rewrite
 
-# 7. Copiar código
+# 7. Copiar el código del proyecto al contenedor
 WORKDIR /app
 COPY . /app
 
-# 8. Script de arranque
+# 8. Script de arranque para solucionar el puerto 8080, módulos MPM y permisos del volumen
 RUN echo '#!/bin/bash\n\
 a2dismod mpm_event mpm_worker\n\
 a2enmod mpm_prefork\n\
@@ -42,7 +42,8 @@ chown -R www-data:www-data /app/imagenes/productos\n\
 chmod -R 775 /app/imagenes/productos\n\
 exec apache2-foreground' > /start.sh
 
+# 9. Dar permisos de ejecución al script de inicio
 RUN chmod +x /start.sh
 
-# 9. Comando final
+# 10. Comando de ejecución
 CMD ["/start.sh"]
