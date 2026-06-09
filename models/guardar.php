@@ -7,7 +7,7 @@ $apellido = $_POST['apellido'];
 $direccion = $_POST['direccion'];
 $telefono = $_POST['telefono'];
 
-$sqlInsert = "insert into estudiantes values ('$cedula','$nombre','$apellido','$direccion','$telefono')";
+$sqlInsert = "insert into estudiantes values ('$cedula','$nombre','$apellido','$telefono','$direccion')";
 if($conn->query($sqlInsert)==true){
     echo json_encode("Se inserto al estudiante");
 }else{
