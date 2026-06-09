@@ -1,6 +1,5 @@
 # 1. Base oficial de PHP 8.2 con Apache
 FROM php:8.2-apache
-
 # 2. EL TRUCO MAESTRO: Copiamos Java 8 nativo desde su imagen oficial a tu servidor
 COPY --from=eclipse-temurin:8-jre /opt/java/openjdk /opt/java/openjdk8
 
