@@ -43,8 +43,11 @@ class ProductoController
         }
 
         $dir = __DIR__ . '/../' . self::$dirImagenes;
+        
+        // CORRECCIÓN 1: Crear la carpeta con permisos 0775 y forzarlos explícitamente
         if (!is_dir($dir)) {
-            mkdir($dir, 0755, true);
+            mkdir($dir, 0775, true);
+            chmod($dir, 0775); 
         }
 
         $ext = strtolower(pathinfo($_FILES[$campo]['name'], PATHINFO_EXTENSION));
@@ -55,9 +58,13 @@ class ProductoController
 
         $nombre = uniqid('prod_', true) . '.' . $ext;
         $destino = $dir . $nombre;
+        
+        // CORRECCIÓN 2: Mover el archivo y darle permisos de lectura/escritura inmediatamente
         if (move_uploaded_file($_FILES[$campo]['tmp_name'], $destino)) {
+            chmod($destino, 0664);
             return $nombre;
         }
+        
         return false;
     }
 
@@ -104,6 +111,7 @@ class ProductoController
         $descripcion = trim($_POST['descripcion'] ?? '');
         $precio = (float) ($_POST['precio'] ?? 0);
         $imagen = self::subirImagen();
+        
         if ($imagen === false) {
             $_SESSION['producto_error'] = 'Imagen no válida.';
             header('Location: index.php?accion=Productos&editar=' . $id);
