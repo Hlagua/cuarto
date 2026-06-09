@@ -1,9 +1,9 @@
 # 1. Base oficial de PHP 8.2 con Apache
 FROM php:8.2-apache
 
-# 2. Instalar dependencias del sistema
+# 2. Instalar dependencias del sistema (usamos openjdk-17-jre)
 RUN apt-get update && apt-get install -y \
-    openjdk-8-jre \
+    openjdk-17-jre \
     fontconfig \
     nodejs \
     npm \
@@ -15,25 +15,22 @@ RUN apt-get update && apt-get install -y \
 # 3. Instalar la extensión mysqli (y PDO por si acaso)
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# 4. Instalar Composer (copiándolo de la imagen oficial)
+# 4. Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 5. Configurar Apache para que la raíz sea /app (como lo espera Railway)
+# 5. Configurar Apache
 ENV APACHE_DOCUMENT_ROOT=/app
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# 6. Habilitar mod_rewrite (esencial para tu index.php?accion=...)
+# 6. Habilitar mod_rewrite
 RUN a2enmod rewrite
 
-# 7. Copiar tu código al contenedor
+# 7. Copiar código
 WORKDIR /app
 COPY . /app
 
-# 8. LA SOLUCIÓN AL PUERTO Y A LOS PERMISOS
-# Movemos la configuración del puerto aquí para que se evalúe correctamente al arrancar
-# 8. LA SOLUCIÓN AL PUERTO Y A LOS PERMISOS
-# Ahora forzamos el puerto 8080 explícitamente en la configuración
+# 8. Script de arranque
 RUN echo '#!/bin/bash\n\
 a2dismod mpm_event mpm_worker\n\
 a2enmod mpm_prefork\n\
@@ -45,8 +42,7 @@ chown -R www-data:www-data /app/imagenes/productos\n\
 chmod -R 775 /app/imagenes/productos\n\
 exec apache2-foreground' > /start.sh
 
-# 9. Dar permisos de ejecución al script
 RUN chmod +x /start.sh
 
-# 10. Comando final
+# 9. Comando final
 CMD ["/start.sh"]
