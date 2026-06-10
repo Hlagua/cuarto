@@ -10,6 +10,8 @@ $carrito = $_SESSION['carrito'] ?? [];
 ?>
 <link rel="stylesheet" href="css/style.css" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <div class="uta-container">
     <h1 class="uta-title">Nosotros — Tienda FISEI</h1>
@@ -23,7 +25,11 @@ $carrito = $_SESSION['carrito'] ?? [];
                     </div>
                     <div class="card-body">
                         <?php if (!empty($_SESSION['login_error'])): ?>
-                            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['login_error']) ?></div>
+                            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-3" role="alert">
+                                <i class="fa-solid fa-circle-exclamation me-2 fs-5"></i>
+                                <div><?= htmlspecialchars($_SESSION['login_error']) ?></div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
                             <?php unset($_SESSION['login_error']); ?>
                         <?php endif; ?>
                         <form method="post" action="index.php?accion=Nosotros">
@@ -61,11 +67,19 @@ $carrito = $_SESSION['carrito'] ?? [];
         </div>
 
         <?php if (!empty($_SESSION['carrito_ok'])): ?>
-            <div class="alert alert-success"><?= htmlspecialchars($_SESSION['carrito_ok']) ?></div>
+            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-3" role="alert">
+                <i class="fa-solid fa-circle-check me-2 fs-5"></i>
+                <div><?= htmlspecialchars($_SESSION['carrito_ok']) ?></div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <?php unset($_SESSION['carrito_ok']); ?>
         <?php endif; ?>
         <?php if (!empty($_SESSION['carrito_error'])): ?>
-            <div class="alert alert-danger"><?= htmlspecialchars($_SESSION['carrito_error']) ?></div>
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-3" role="alert">
+                <i class="fa-solid fa-circle-exclamation me-2 fs-5"></i>
+                <div><?= htmlspecialchars($_SESSION['carrito_error']) ?></div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <?php unset($_SESSION['carrito_error']); ?>
         <?php endif; ?>
 
@@ -191,3 +205,63 @@ $carrito = $_SESSION['carrito'] ?? [];
 
     <?php endif; ?>
 </div>
+
+<script>
+// Restricción de entrada de cantidad: solo números enteros y positivos (sin -, +, e, puntos o comas)
+document.addEventListener('DOMContentLoaded', function() {
+    var quantityInputs = document.querySelectorAll('input[type="number"]');
+    
+    quantityInputs.forEach(function(input) {
+        // Bloquear caracteres no numéricos permitidos por input type=number en keydown
+        input.addEventListener('keydown', function(e) {
+            if (['e', 'E', '+', '-', '.', ','].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Bloquear en keypress como respaldo adicional
+        input.addEventListener('keypress', function(e) {
+            var charCode = e.which ? e.which : e.keyCode;
+            var charStr = String.fromCharCode(charCode);
+            if (!/[0-9]/.test(charStr)) {
+                e.preventDefault();
+                return false;
+            }
+            return true;
+        });
+
+        // Limpiar cualquier entrada no numérica pegada o colada
+        input.addEventListener('input', function() {
+            var originalVal = this.value;
+            var cleanedVal = originalVal.replace(/[^0-9]/g, '');
+            if (originalVal !== cleanedVal) {
+                this.value = cleanedVal;
+            }
+        });
+
+        // Asegurar que no quede vacío, con un cero, o con guiones al salir del campo (blur)
+        input.addEventListener('blur', function() {
+            var val = parseInt(this.value, 10);
+            var min = parseInt(this.getAttribute('min'), 10) || 1;
+            var max = parseInt(this.getAttribute('max'), 10);
+            
+            if (isNaN(val) || val < min) {
+                this.value = min;
+            } else if (max && val > max) {
+                this.value = max;
+            }
+            
+            // Si es del carrito y cambió, forzar envío para recalcular
+            if (this.classList.contains('cantidad-input')) {
+                var formId = this.getAttribute('form');
+                if (formId) {
+                    var form = document.getElementById(formId);
+                    if (form) {
+                        form.submit();
+                    }
+                }
+            }
+        });
+    });
+});
+</script>
