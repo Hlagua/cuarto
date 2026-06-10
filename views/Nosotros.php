@@ -5,7 +5,7 @@ require_once __DIR__ . '/../controllers/ProductoController.php';
 
 $logueado = AuthController::estaLogueado();
 $esCliente = AuthController::esCliente();
-$productos = $logueado ? ProductoModel::listar(true) : [];
+$productos = ($logueado && $esCliente) ? ProductoModel::listar(true) : [];
 $carrito = $_SESSION['carrito'] ?? [];
 ?>
 <link rel="stylesheet" href="css/style.css" />
@@ -72,7 +72,15 @@ $carrito = $_SESSION['carrito'] ?? [];
         <h2 class="h4 mt-4 mb-3">Productos disponibles</h2>
         <div class="row g-4">
             <?php if (empty($productos)): ?>
-                <div class="col-12"><p class="text-muted">No hay productos. El administrador puede agregarlos en Productos.</p></div>
+                <?php if (AuthController::esAdmin()): ?>
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            Ha iniciado sesión como <strong>Administrador</strong>. Para gestionar la venta de productos, por favor diríjase al menú <a href="?accion=Productos" class="alert-link">Productos</a>.
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="col-12"><p class="text-muted">No hay productos disponibles para la compra en este momento.</p></div>
+                <?php endif; ?>
             <?php else: ?>
                 <?php foreach ($productos as $p): ?>
                     <?php $img = ProductoController::rutaImagen($p['imagen']); ?>
@@ -173,8 +181,8 @@ $carrito = $_SESSION['carrito'] ?? [];
 
                 <form method="post" action="index.php?accion=Nosotros" class="mt-3">
                     <input type="hidden" name="accion_carrito" value="finalizar">
-                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('¿Finalizar compra?');">
-                        Finalizar compra
+                    <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('¿Confirmar la compra?');">
+                        Comprar
                     </button>
                 </form>
                 <script src="js/carrito.js"></script>

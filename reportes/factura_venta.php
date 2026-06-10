@@ -134,7 +134,8 @@ $pdf->SetTextColor(255, 255, 255);
 $pdf->SetFillColor(120, 30, 36); // Burdeos
 $pdf->SetDrawColor(120, 30, 36);
 
-$pdf->Cell(105, 8, mb_convert_encoding('DESCRIPCIÓN DEL PRODUCTO', 'ISO-8859-1', 'UTF-8'), 1, 0, 'L', true);
+$pdf->Cell(20, 8, 'ID PROD.', 1, 0, 'C', true);
+$pdf->Cell(85, 8, mb_convert_encoding('DESCRIPCIÓN DEL PRODUCTO', 'ISO-8859-1', 'UTF-8'), 1, 0, 'L', true);
 $pdf->Cell(20, 8, 'CANTIDAD', 1, 0, 'C', true);
 $pdf->Cell(30, 8, 'P. UNITARIO', 1, 0, 'R', true);
 $pdf->Cell(35, 8, 'SUBTOTAL', 1, 1, 'R', fill: true);
@@ -148,7 +149,8 @@ $fill = false;
 foreach ($detalles as $d) {
     $pdf->SetFillColor(248, 249, 250); // Gris muy claro para filas alternas
     
-    $pdf->Cell(105, 8, mb_convert_encoding($d['nombre'], 'ISO-8859-1', 'UTF-8'), 'LBR', 0, 'L', $fill);
+    $pdf->Cell(20, 8, (string) $d['producto_id'], 'LBR', 0, 'C', $fill);
+    $pdf->Cell(85, 8, mb_convert_encoding($d['nombre'], 'ISO-8859-1', 'UTF-8'), 'BR', 0, 'L', $fill);
     $pdf->Cell(20, 8, (string) $d['cantidad'], 'BR', 0, 'C', $fill);
     $pdf->Cell(30, 8, '$' . number_format((float) $d['precio_unitario'], 2), 'BR', 0, 'R', $fill);
     $pdf->Cell(35, 8, '$' . number_format((float) $d['subtotal'], 2), 'BR', 1, 'R', $fill);

@@ -6,21 +6,7 @@ class ResumenController
 {
     public static function procesar()
     {
-        // Intercepta solicitudes API para actualización en vivo por AJAX
-        if (isset($_GET['accion']) && $_GET['accion'] === 'ResumenFacturacion' && isset($_GET['api'])) {
-            if (!AuthController::estaLogueado()) {
-                header('HTTP/1.1 403 Forbidden');
-                header('Content-Type: application/json');
-                echo json_encode(['error' => 'No autorizado']);
-                exit;
-            }
-            header('Content-Type: application/json');
-            echo json_encode([
-                'stats' => self::obtenerStats(),
-                'recientes' => self::obtenerVentasRecientes(10)
-            ]);
-            exit;
-        }
+        // No-op ya que no se permite el uso de AJAX/API asíncronas de acuerdo a las restricciones.
     }
 
     public static function obtenerStats()
