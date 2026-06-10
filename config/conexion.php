@@ -1,14 +1,12 @@
 <?php
-// Configuración de conexión a la base de datos (MySQL / Railway)
-$host = 'kodama.proxy.rlwy.net';
-$user = 'root'; 
-$pass = 'pzhkIBEHOQnMtGvEROfMaAOAHVdfhwFF';
-$db   = 'railway'; 
-$port = 43206;
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "cuartob";
+$mysql=new mysqli($servername, $username, $password, $database);//este toca instanciar
+$conn= mysqli_connect($servername, $username, $password, $database);// este es un metodo estatico
+if(!$conn){
+    die("Error al conectar a la base de datos: " . mysqli_connect_error());
+}   
 
-$conn = new mysqli($host, $user, $pass, $db, $port);
-
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
 ?>
