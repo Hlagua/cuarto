@@ -1,9 +1,9 @@
 <?php
-$host = 'kodama.proxy.rlwy.net';
+$host = 'localhost';
 $user = 'root'; 
-$pass = 'pzhkIBEHOQnMtGvEROfMaAOAHVdfhwFF';
-$db   = 'railway'; // Este es el nombre estándar que asigna Railway
-$port = 43206;
+$pass = '';
+$db   = 'cuarto'; // Este es el nombre estándar que asigna Railway
+$port = 3306;
 
 $conn = new mysqli($host, $user, $pass, $db, $port);
 

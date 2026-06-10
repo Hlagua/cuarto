@@ -6,116 +6,148 @@
  pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20"
  uuid="c1e1fa57-3f36-4d58-8b72-bdaa1ae71953">
 
-    <!-- =====================================================
-         ESTILOS
-    ====================================================== -->
+    <!-- ESTILOS -->
 
-    <style name="Title" fontName="DejaVu Sans" fontSize="22" isBold="true"
-           forecolor="#222222"/>
+    <style name="Title" fontName="DejaVu Sans" fontSize="18" isBold="false"
+           forecolor="#1A1A1A"/>
 
-    <style name="Header" fontName="DejaVu Sans" fontSize="11" isBold="true"
-           mode="Opaque" backcolor="#2D2D2D" forecolor="#FFFFFF"/>
+    <style name="Subtitle" fontName="DejaVu Sans" fontSize="9" isBold="false"
+           forecolor="#999999"/>
 
-    <style name="Cell" fontName="DejaVu Sans" fontSize="11" forecolor="#333333"/>
+    <style name="Header" fontName="DejaVu Sans" fontSize="9" isBold="true"
+           mode="Opaque" backcolor="#FFFFFF" forecolor="#888888"/>
+
+    <style name="Cell" fontName="DejaVu Sans" fontSize="10" forecolor="#2C2C2C"/>
 
     <style name="Row">
         <conditionalStyle>
             <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-            <style backcolor="#F8F8F8" mode="Opaque"/>
+            <style backcolor="#F4F6F8" mode="Opaque"/>
         </conditionalStyle>
     </style>
 
-    <!-- =====================================================
-         QUERY
-    ====================================================== -->
+    <!-- QUERY -->
 
     <queryString language="SQL"><![CDATA[
         SELECT cedula, nombre, apellido, telefono, direccion
         FROM estudiantes;
     ]]></queryString>
 
-    <field name="cedula" class="java.lang.String"/>
-    <field name="nombre" class="java.lang.String"/>
-    <field name="apellido" class="java.lang.String"/>
-    <field name="telefono" class="java.lang.String"/>
+    <field name="cedula"    class="java.lang.String"/>
+    <field name="nombre"    class="java.lang.String"/>
+    <field name="apellido"  class="java.lang.String"/>
+    <field name="telefono"  class="java.lang.String"/>
     <field name="direccion" class="java.lang.String"/>
 
-    <!-- =====================================================
-         TITULO
-    ====================================================== -->
+    <!-- TÍTULO -->
 
     <title>
-        <band height="60">
+        <band height="64">
+
+            <rectangle>
+                <reportElement x="0" y="8" width="3" height="34"
+                    forecolor="#4F6AF0" backcolor="#4F6AF0"
+                    uuid="a1b2c3d4-0001-0001-0001-000000000001"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+
             <staticText>
-                <reportElement style="Title" x="0" y="10" width="535" height="40"
-                    uuid="5c5b7f0e-2432-4ff5-b07d-2c6ea29028a6"/>
-                <textElement textAlignment="Center"/>
-                <text><![CDATA[Reporte de los Estudiantes]]></text>
+                <reportElement style="Title" x="12" y="8" width="523" height="24"
+                    uuid="a1b2c3d4-0002-0002-0002-000000000002"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <text><![CDATA[Reporte de Estudiantes]]></text>
             </staticText>
+
+            <staticText>
+                <reportElement style="Subtitle" x="12" y="34" width="523" height="14"
+                    uuid="a1b2c3d4-0003-0003-0003-000000000003"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <text><![CDATA[Listado general · Sistema de Gestión Académica]]></text>
+            </staticText>
+
+            <line>
+                <reportElement x="0" y="62" width="535" height="1"
+                    forecolor="#E0E0E0"
+                    uuid="a1b2c3d4-0004-0004-0004-000000000004"/>
+                <graphicElement>
+                    <pen lineWidth="1.0"/>
+                </graphicElement>
+            </line>
+
         </band>
     </title>
 
-    <!-- =====================================================
-         CABECERA TABLA (COLUMNAS)
-    ====================================================== -->
+    <!-- CABECERA TABLA -->
 
     <columnHeader>
-        <band height="26">
+        <band height="28">
+
             <staticText>
-                <reportElement style="Header" x="0" y="0" width="90" height="26"
+                <reportElement style="Header" x="0" y="0" width="90" height="24"
                     uuid="11111111-1111-1111-1111-111111111111"/>
-                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <box>
+                    <bottomPen lineWidth="1.5" lineColor="#4F6AF0"/>
+                </box>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <paragraph leftIndent="6"/>
                 </textElement>
-                <text><![CDATA[Cédula]]></text>
+                <text><![CDATA[CÉDULA]]></text>
             </staticText>
 
             <staticText>
-                <reportElement style="Header" x="90" y="0" width="115" height="26"
+                <reportElement style="Header" x="90" y="0" width="115" height="24"
                     uuid="22222222-2222-2222-2222-222222222222"/>
-                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <box>
+                    <bottomPen lineWidth="1.5" lineColor="#4F6AF0"/>
+                </box>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <paragraph leftIndent="6"/>
                 </textElement>
-                <text><![CDATA[Nombre]]></text>
+                <text><![CDATA[NOMBRE]]></text>
             </staticText>
 
             <staticText>
-                <reportElement style="Header" x="205" y="0" width="115" height="26"
+                <reportElement style="Header" x="205" y="0" width="115" height="24"
                     uuid="33333333-3333-3333-3333-333333333333"/>
-                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <box>
+                    <bottomPen lineWidth="1.5" lineColor="#4F6AF0"/>
+                </box>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <paragraph leftIndent="6"/>
                 </textElement>
-                <text><![CDATA[Apellido]]></text>
+                <text><![CDATA[APELLIDO]]></text>
             </staticText>
 
             <staticText>
-                <reportElement style="Header" x="320" y="0" width="95" height="26"
+                <reportElement style="Header" x="320" y="0" width="95" height="24"
                     uuid="44444444-4444-4444-4444-444444444444"/>
-                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <box>
+                    <bottomPen lineWidth="1.5" lineColor="#4F6AF0"/>
+                </box>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <paragraph leftIndent="6"/>
                 </textElement>
-                <text><![CDATA[Teléfono]]></text>
+                <text><![CDATA[TELÉFONO]]></text>
             </staticText>
 
             <staticText>
-                <reportElement style="Header" x="415" y="0" width="120" height="26"
+                <reportElement style="Header" x="415" y="0" width="120" height="24"
                     uuid="55555555-5555-5555-5555-555555555555"/>
-                <box><pen lineWidth="0.5" lineColor="#FFFFFF"/></box>
+                <box>
+                    <bottomPen lineWidth="1.5" lineColor="#4F6AF0"/>
+                </box>
                 <textElement textAlignment="Left" verticalAlignment="Middle">
                     <paragraph leftIndent="6"/>
                 </textElement>
-                <text><![CDATA[Dirección]]></text>
+                <text><![CDATA[DIRECCIÓN]]></text>
             </staticText>
+
         </band>
     </columnHeader>
 
-    <!-- =====================================================
-         DETALLE (FILAS)
-    ====================================================== -->
+    <!-- DETALLE -->
 
     <detail>
         <band height="24">
@@ -127,7 +159,9 @@
                 <textField>
                     <reportElement style="Cell" x="0" y="0" width="90" height="24"
                         uuid="77777777-7777-7777-7777-777777777777"/>
-                    <box><pen lineWidth="0.5" lineColor="#CCCCCC"/></box>
+                    <box>
+                        <bottomPen lineWidth="0.5" lineColor="#E8E8E8"/>
+                    </box>
                     <textElement verticalAlignment="Middle">
                         <paragraph leftIndent="6"/>
                     </textElement>
@@ -137,7 +171,9 @@
                 <textField>
                     <reportElement style="Cell" x="90" y="0" width="115" height="24"
                         uuid="88888888-8888-8888-8888-888888888888"/>
-                    <box><pen lineWidth="0.5" lineColor="#CCCCCC"/></box>
+                    <box>
+                        <bottomPen lineWidth="0.5" lineColor="#E8E8E8"/>
+                    </box>
                     <textElement verticalAlignment="Middle">
                         <paragraph leftIndent="6"/>
                     </textElement>
@@ -147,7 +183,9 @@
                 <textField>
                     <reportElement style="Cell" x="205" y="0" width="115" height="24"
                         uuid="99999999-9999-9999-9999-999999999999"/>
-                    <box><pen lineWidth="0.5" lineColor="#CCCCCC"/></box>
+                    <box>
+                        <bottomPen lineWidth="0.5" lineColor="#E8E8E8"/>
+                    </box>
                     <textElement verticalAlignment="Middle">
                         <paragraph leftIndent="6"/>
                     </textElement>
@@ -157,7 +195,9 @@
                 <textField>
                     <reportElement style="Cell" x="320" y="0" width="95" height="24"
                         uuid="aaaaaaa1-aaaa-aaaa-aaaa-aaaaaaaaaaa1"/>
-                    <box><pen lineWidth="0.5" lineColor="#CCCCCC"/></box>
+                    <box>
+                        <bottomPen lineWidth="0.5" lineColor="#E8E8E8"/>
+                    </box>
                     <textElement verticalAlignment="Middle">
                         <paragraph leftIndent="6"/>
                     </textElement>
@@ -167,7 +207,9 @@
                 <textField>
                     <reportElement style="Cell" x="415" y="0" width="120" height="24"
                         uuid="bbbbbbb1-bbbb-bbbb-bbbb-bbbbbbbbbbb1"/>
-                    <box><pen lineWidth="0.5" lineColor="#CCCCCC"/></box>
+                    <box>
+                        <bottomPen lineWidth="0.5" lineColor="#E8E8E8"/>
+                    </box>
                     <textElement verticalAlignment="Middle">
                         <paragraph leftIndent="6"/>
                     </textElement>
